@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f8f4">
+  <meta name="description" content="Pythonified C++ makes C++ feel a little more like Python, with friendly helper functions for readable code.">
+  <title>Pythonified C++ — C++ with a Pythonic touch</title>
+  <style>
+    :root {
+      --ink: #17231f;
+      --muted: #65736d;
+      --green: #176b50;
+      --green-dark: #10533e;
+      --mint: #dff2e8;
+      --cream: #f7f8f4;
+      --line: #e4e9e3;
+      --card: #fff;
+      --yellow: #ffe6a1;
+      --shadow: 0 18px 55px rgba(29, 57, 44, .09);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; color: var(--ink); background: var(--cream);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1120px, calc(100% - 44px)); margin: auto; }
+    header { padding: 22px 0; }
+    .nav { display:flex; align-items:center; justify-content:space-between; gap:24px; }
+    .brand { display:flex; align-items:center; gap:11px; font-weight:800; letter-spacing:-.04em; font-size:1.1rem; }
+    .brand-mark {
+      display:grid; place-items:center; width:38px; height:38px; border-radius:12px;
+      color:white; background:var(--green); font-family:ui-monospace, monospace; font-weight:800;
+      box-shadow:0 6px 16px rgba(23,107,80,.2);
+    }
+    .nav-links { display:flex; align-items:center; gap:28px; color:var(--muted); font-size:.92rem; }
+    .nav-links a:hover { color:var(--green); }
+    .button {
+      display:inline-flex; align-items:center; justify-content:center; gap:9px; padding:12px 18px;
+      border-radius:12px; background:var(--green); color:white; font-weight:700; font-size:.93rem;
+      border:1px solid var(--green); transition:.2s ease; cursor:pointer;
+    }
+    .button:hover { background:var(--green-dark); transform:translateY(-2px); }
+    .button.secondary { color:var(--ink); background:white; border-color:var(--line); }
+    .button.secondary:hover { border-color:#a8c8b6; background:#fbfdfb; }
+    .hero { padding:76px 0 84px; position:relative; overflow:hidden; }
+    .hero:before {
+      content:""; position:absolute; width:440px; height:440px; border-radius:50%;
+      background:radial-gradient(circle, #dff2e8 0%, rgba(223,242,232,0) 70%);
+      right:-110px; top:-130px; z-index:-1;
+    }
+    .hero-grid { display:grid; grid-template-columns:1.04fr .96fr; align-items:center; gap:64px; }
+    .eyebrow { display:inline-flex; align-items:center; gap:8px; padding:7px 12px; border-radius:999px;
+      background:var(--mint); color:var(--green-dark); font-size:.78rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase; }
+    h1 { font-size:clamp(2.8rem, 6vw, 5rem); line-height:1.04; letter-spacing:-.065em; margin:22px 0 20px; max-width:650px; }
+    h1 span { color:var(--green); }
+    .hero-copy { color:var(--muted); font-size:1.15rem; max-width:550px; margin:0 0 28px; }
+    .actions { display:flex; flex-wrap:wrap; gap:12px; }
+    .micro { margin-top:20px; color:var(--muted); font-size:.84rem; }
+    .code-window { background:#14221d; border-radius:20px; box-shadow:var(--shadow); overflow:hidden; transform:rotate(1deg); }
+    .window-bar { height:48px; display:flex; align-items:center; gap:7px; padding:0 18px; background:#1d3028; }
+    .dot { width:9px; height:9px; border-radius:50%; background:#6b8277; }
+    .window-title { color:#a9bdb2; font:12px ui-monospace,monospace; margin-left:auto; }
+    pre { margin:0; padding:27px 27px 31px; overflow:auto; color:#e9f4ed; font:14px/1.9 ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .comment { color:#8da69a; } .keyword { color:#b8d9ff; } .function { color:#91e0b6; } .string { color:#f5d58b; }
+    .code-note { padding:13px 22px; color:#b6c9bf; background:#1a2c24; font-size:.8rem; }
+    .section { padding:82px 0; }
+    .section-head { max-width:650px; margin-bottom:34px; }
+    .kicker { color:var(--green); text-transform:uppercase; font-weight:800; font-size:.76rem; letter-spacing:.12em; }
+    h2 { font-size:clamp(2rem,4vw,3rem); letter-spacing:-.05em; line-height:1.12; margin:10px 0 14px; }
+    .section-head p { color:var(--muted); margin:0; font-size:1.04rem; }
+    .features { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+    .feature { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:25px; }
+    .feature-icon { width:43px; height:43px; display:grid; place-items:center; border-radius:13px; background:var(--mint); font-size:1.25rem; }
+    .feature h3 { margin:17px 0 7px; font-size:1.1rem; letter-spacing:-.02em; }
+    .feature p { color:var(--muted); margin:0; font-size:.94rem; }
+    .function-list { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .function-card { background:white; border:1px solid var(--line); border-radius:18px; padding:25px; }
+    .function-top { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
+    .function-card h3 { margin:0; font-size:1.18rem; }
+    .tag { color:var(--green); background:var(--mint); padding:4px 9px; border-radius:999px; font-size:.72rem; font-weight:800; }
+    .function-card p { color:var(--muted); margin:0 0 15px; }
+    .inline-code { display:block; background:#f1f5f1; border-radius:10px; padding:12px 14px; color:#24523f; font: .86rem ui-monospace,monospace; overflow:auto; }
+    .install { background:#edf4ed; border-top:1px solid #e0e9df; border-bottom:1px solid #e0e9df; }
+    .install-grid { display:grid; grid-template-columns:.8fr 1.2fr; align-items:center; gap:45px; }
+    .install p { color:var(--muted); }
+    .steps { background:white; border:1px solid var(--line); border-radius:18px; padding:24px; }
+    .step { display:flex; gap:14px; align-items:flex-start; }
+    .step + .step { margin-top:20px; padding-top:20px; border-top:1px solid var(--line); }
+    .number { flex:0 0 30px; height:30px; display:grid; place-items:center; border-radius:10px; background:var(--mint); color:var(--green); font-weight:800; }
+    .step strong { display:block; margin-bottom:3px; }
+    .step p { margin:0; font-size:.9rem; }
+    .example { background:#fff; border:1px solid var(--line); border-radius:18px; overflow:hidden; }
+    .example-head { padding:17px 22px; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .example-head strong { font-size:.95rem; }
+    .copy { border:1px solid var(--line); border-radius:9px; background:white; padding:7px 11px; font-weight:700; cursor:pointer; color:var(--green); }
+    .example pre { background:#14221d; }
+    .cta { text-align:center; padding:76px 0 86px; }
+    .cta-inner { background:var(--green); color:white; border-radius:24px; padding:52px 24px; position:relative; overflow:hidden; }
+    .cta-inner:after { content:"{}"; position:absolute; right:6%; top:0; font: bold 130px ui-monospace,monospace; color:rgba(255,255,255,.07); }
+    .cta h2 { margin:0 auto 13px; max-width:600px; }
+    .cta p { color:#d4e8dc; margin:0 auto 25px; max-width:540px; }
+    .cta .button { background:white; color:var(--green-dark); border-color:white; position:relative; z-index:1; }
+    footer { padding:24px 0 32px; border-top:1px solid var(--line); color:var(--muted); font-size:.86rem; }
+    .footer-row { display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+    .footer-links { display:flex; gap:20px; }
+    .footer-links a:hover { color:var(--green); }
+    @media (max-width:800px) {
+      .hero-grid,.install-grid { grid-template-columns:1fr; gap:38px; }
+      .hero { padding:52px 0 65px; }
+      .code-window { transform:none; }
+      .features { grid-template-columns:1fr 1fr; }
+      .nav-links { display:none; }
+    }
+    @media (max-width:540px) {
+      .wrap { width:min(100% - 32px,1120px); }
+      .features,.function-list { grid-template-columns:1fr; }
+      .section { padding:62px 0; }
+      h1 { font-size:3rem; }
+      pre { padding:20px; font-size:12px; }
+      .cta-inner { padding:42px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#" aria-label="Pythonified C++ home">
+        <span class="brand-mark">Py</span><span>Pythonified C++</span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#features">Why Pythonified?</a>
+        <a href="#functions">Functions</a>
+        <a href="#getting-started">Getting started</a>
+      </nav>
+      <a class="button" href="https://github.com/Bofamily/pythonifiedCPP" target="_blank" rel="noopener">View on GitHub <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow">A little more Pythonic ✨</span>
+          <h1>Write C++ with a <span>friendlier</span> feel.</h1>
+          <p class="hero-copy">Pythonified C++ is a small C++ library that brings familiar Python-style helpers to your projects — making everyday code feel a bit more readable and approachable.</p>
+          <div class="actions">
+            <a class="button" href="#getting-started">Get started <span aria-hidden="true">→</span></a>
+            <a class="button secondary" href="https://github.com/Bofamily/pythonifiedCPP" target="_blank" rel="noopener">Explore the source code</a>
+          </div>
+          <p class="micro">Lightweight · Header-based · Easy to add to an existing C++ project</p>
+        </div>
+        <div class="code-window" aria-label="Example C++ code">
+          <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="window-title">main.cpp</span></div>
+          <pre><span class="comment">// Make C++ feel a little more familiar</span>
+<span class="keyword">#include</span> <span class="string">"pythonifiedCPP.h"</span>
+
+<span class="keyword">int</span> main()
+{
+    <span class="function">print</span>(<span class="string">"Hello, World!"</span>);
+
+    <span class="comment">// Wait for one second</span>
+    pytime::wait(1000);
+
+    <span class="function">print</span>(<span class="string">"Goodbye, World!"</span>);
+    <span class="keyword">return</span> 0;
+}</pre>
+          <div class="code-note">A familiar, simple way to add a little Python-inspired convenience to C++.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="kicker">Made to feel familiar</span>
+          <h2>Small helpers. Smoother code.</h2>
+          <p>Pythonified C++ keeps things simple: a collection of convenient functions designed to make common tasks feel more straightforward.</p>
+        </div>
+        <div class="features">
+          <article class="feature">
+            <div class="feature-icon">💬</div>
+            <h3>Readable output</h3>
+            <p>Use a simple <code>print()</code> helper to send text to the console without the extra ceremony.</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon">⏱️</div>
+            <h3>Easy waiting</h3>
+            <p>Pause execution with <code>pytime::wait()</code>, using milliseconds just like the documented helper.</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon">🧩</div>
+            <h3>Simple to include</h3>
+            <p>Add the library header to your project's include directory and include it where you need it.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="functions" style="padding-top:20px">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="kicker">What's included</span>
+          <h2>Meet the helpers</h2>
+          <p>The current README documents these functions. More can be added as the library grows.</p>
+        </div>
+        <div class="function-list">
+          <article class="function-card">
+            <div class="function-top"><h3><code>print(input)</code></h3><span class="tag">Console</span></div>
+            <p>Prints the supplied input to the console and returns <code>0</code>.</p>
+            <code class="inline-code">print("Hello, World!");</code>
+          </article>
+          <article class="function-card">
+            <div class="function-top"><h3><code>pytime::wait(ms)</code></h3><span class="tag">Timing</span></div>
+            <p>Waits for the specified number of milliseconds. For example, <code>1000</code> is one second.</p>
+            <code class="inline-code">pytime::wait(1000);</code>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section install" id="getting-started">
+      <div class="wrap install-grid">
+        <div>
+          <span class="kicker">Up and running</span>
+          <h2>Getting started is easy.</h2>
+          <p>Pythonified C++ is designed to slot into a C++ project without a complicated setup process.</p>
+          <a class="button" href="https://github.com/Bofamily/pythonifiedCPP" target="_blank" rel="noopener">Get the header on GitHub ↗</a>
+        </div>
+        <div class="steps">
+          <div class="step"><span class="number">1</span><div><strong>Get the header</strong><p>Download <code>pythonifiedCPP.h</code> from the repository.</p></div></div>
+          <div class="step"><span class="number">2</span><div><strong>Add it to your project</strong><p>Place the header in your project's include directory.</p></div></div>
+          <div class="step"><span class="number">3</span><div><strong>Include and use it</strong><p>Add <code>#include "pythonifiedCPP.h"</code> and start using the helpers.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-bottom:20px">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="kicker">Try it out</span>
+          <h2>Your first Pythonified C++ program</h2>
+          <p>Here's the complete example from the project README, ready to copy into your editor.</p>
+        </div>
+        <div class="example">
+          <div class="example-head"><strong>main.cpp</strong><button class="copy" id="copyCode" type="button">Copy code</button></div>
+          <pre id="sampleCode"><span class="keyword">#include</span> <span class="string">"pythonifiedCPP.h"</span>
+
+<span class="keyword">int</span> main()
+{
+    print(<span class="string">"Hello, World!"</span>);
+    pytime::wait(1000);
+    print(<span class="string">"Goodbye, World!"</span>);
+    <span class="keyword">return</span> 0;
+}</pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="wrap">
+        <div class="cta-inner">
+          <h2>Curious? Take a look under the hood.</h2>
+          <p>Explore the source, check out the latest changes, and see what you can build with Pythonified C++.</p>
+          <a class="button" href="https://github.com/Bofamily/pythonifiedCPP" target="_blank" rel="noopener">Visit the GitHub repository ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-row">
+      <span>© <span id="year"></span> Pythonified C++ · Built for curious developers.</span>
+      <div class="footer-links">
+        <a href="https://github.com/Bofamily/pythonifiedCPP" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/Bofamily/pythonifiedCPP/blob/main/README.md" target="_blank" rel="noopener">README</a>
+      </div>
+    </div>
+  </footer>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    document.getElementById("copyCode").addEventListener("click", async () => {
+      const code = `#include "pythonifiedCPP.h"
+
+int main()
+{
+    print("Hello, World!");
+    pytime::wait(1000);
+    print("Goodbye, World!");
+    return 0;
+}`;
+      const button = document.getElementById("copyCode");
+      try {
+        await navigator.clipboard.writeText(code);
+        button.textContent = "Copied!";
+      } catch {
+        button.textContent = "Select code to copy";
+      }
+      setTimeout(() => button.textContent = "Copy code", 1800);
+    });
+  </script>
+</body>
+</html>
