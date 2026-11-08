@@ -21,7 +21,8 @@ int print(const std::string& input) {
 #include <thread>
 
 namespace pytime {
-	int wait(int milliseconds) {
+	int sleep(float seconds) {
+		int milliseconds = static_cast<int>(seconds * 1000);
 		std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
 		return 0;
 	}
