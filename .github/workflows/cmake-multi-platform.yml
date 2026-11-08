@@ -21,10 +21,10 @@ jobs:
             c_compiler: gcc
             cpp_compiler: g++
             artifact_name: linux-gcc
-          - os: ubuntu-latest
+          - os: macos-latest
             c_compiler: clang
             cpp_compiler: clang++
-            artifact_name: linux-clang
+            artifact_name: linux-gcc
           - os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
@@ -42,6 +42,6 @@ jobs:
         -S .
 
     - name: Build
-      run: cmake --build build --config Release
+      run: cmake --build build
 
    
