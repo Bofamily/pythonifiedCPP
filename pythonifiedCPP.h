@@ -4,7 +4,7 @@
 //INCLUDED FUNCTIONS:
 /*
 - print(input) - prints the input string to the console and returns 0 --- Example: print("Hello, World!")
-- pytime::wait the same as time.wait in python in MILLISECONDS --- Example: time::wait(1000) waits one second
+- pytime::sleep the same as time.sleep in python in SECONDS --- Example: pytime::sleep(1) waits one second
 */
 
 #pragma once
