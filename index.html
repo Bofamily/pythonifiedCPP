@@ -163,7 +163,7 @@
     <span class="function">print</span>(<span class="string">"Hello, World!"</span>);
 
     <span class="comment">// Wait for one second</span>
-    pytime::wait(1000);
+    pytime::sleep(1);
 
     <span class="function">print</span>(<span class="string">"Goodbye, World!"</span>);
     <span class="keyword">return</span> 0;
@@ -189,7 +189,7 @@
           <article class="feature">
             <div class="feature-icon">⏱️</div>
             <h3>Easy waiting</h3>
-            <p>Pause execution with <code>pytime::wait()</code>, using milliseconds just like the documented helper.</p>
+            <p>Pause execution with <code>pytime::sleep()</code>, using seconds just like the documented helper.</p>
           </article>
           <article class="feature">
             <div class="feature-icon">🧩</div>
@@ -214,9 +214,9 @@
             <code class="inline-code">print("Hello, World!");</code>
           </article>
           <article class="function-card">
-            <div class="function-top"><h3><code>pytime::wait(ms)</code></h3><span class="tag">Timing</span></div>
-            <p>Waits for the specified number of milliseconds. For example, <code>1000</code> is one second.</p>
-            <code class="inline-code">pytime::wait(1000);</code>
+            <div class="function-top"><h3><code>pytime::sleep(s)</code></h3><span class="tag">Timing</span></div>
+            <p>Waits for the specified number of seconds. For example, <code>1</code> is one second.</p>
+            <code class="inline-code">pytime::sleep(1);</code>
           </article>
         </div>
       </div>
@@ -252,7 +252,7 @@
 <span class="keyword">int</span> main()
 {
     print(<span class="string">"Hello, World!"</span>);
-    pytime::wait(1000);
+    pytime::sleep(1);
     print(<span class="string">"Goodbye, World!"</span>);
     <span class="keyword">return</span> 0;
 }</pre>
@@ -288,7 +288,7 @@
 int main()
 {
     print("Hello, World!");
-    pytime::wait(1000);
+    pytime::sleep(1);
     print("Goodbye, World!");
     return 0;
 }`;
